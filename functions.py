@@ -26,9 +26,10 @@ def print_card(deck):
   elif deck[0][0] == "Y":
     print(Fore.YELLOW + deck[0] + Fore.RESET)
 
-def valid(play, current_card):
-  if play[0] != current_card[0] and play[1] != current_card[1]:
-    return False
+def valid(play, current_card): # play[1] != current_card[1] ISSUE
+  if play[0] != current_card[0]:
+    if play[1] != current_card[1]:
+      return False
   else:
     return True
 
@@ -48,7 +49,7 @@ def player_turn(deck, hand):
     while play not in hand:
       print("Please play a card in your hand.")
       play = input("Your Move: ").upper()
-    while not valid(play, deck[0]):
+    while valid(play, deck[0]) == False:
       print("Please play a valid card.")
       play = input("Your Move: ").upper()
     # put at top of deck, then discard from hand
@@ -62,7 +63,7 @@ def player_turn(deck, hand):
     # draw new one
     deck += [deck.pop(0)]
     play = deck[0]
-    while not valid(play, deck[0]):
+    while valid(play, deck[0]) == False:
       play = deck[0]
       hand.append(play)
       deck.pop(0) # this card is now in hand
