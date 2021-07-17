@@ -59,7 +59,6 @@ while True:
   if functions.win(hand):
     print("You Lose!")
     break
-  print(str(oppHand) + "\n")
   print("")
   current_card = deck[0]
   functions.print_card(current_card)

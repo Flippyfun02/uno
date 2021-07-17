@@ -29,13 +29,9 @@ def print_card(card):
 def valid(play, current_card): # play[1] != current_card[1] ISSUE
   # if possible card
   if (len(play) == 2) and (play[0] in ["R", "G", "B", "Y"]) and (int(play[1]) < 9 and int(play[1]) > 0):
-    if play[0] != current_card[0]:
-      if play[1] != current_card[1]:
-        return False
-    else:
-      return True
-  else:
-    return False
+    if play[0] == current_card[0] or play[1] == current_card[1]:
+        return True
+  return False
 
 def find_card(card, hand):
   for i in range(len(hand)):
@@ -49,7 +45,8 @@ def drawcard(current_card, hand, deck):
   deck += [deck.pop(0)]
   play = deck[0]
   # while not a valid card
-  while valid(play, deck[0]) == False:
+  while valid(play, current_card) == False:
+    time.sleep(1)
     print(".")
     hand.append(play)
     deck.pop(0)
@@ -85,7 +82,6 @@ def player_turn(current_card, hand, deck):
 
 def opp_turn(current_card, oppHand, deck):
   print("\nOpponent's turn...")
-  print_hand(oppHand)
   time.sleep(0.5)
 
   if any(current_card[0] in card for card in oppHand) or any(current_card[1] in card for card in oppHand): # if choice is available
