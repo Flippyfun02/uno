@@ -39,7 +39,7 @@ def find_card(card, hand):
       return i
 
 def drawcard(current_card, hand, deck):
-  print("\n\nDrawing new card...", end = "")
+  print("\nDrawing new card...", end = "")
   # put current card at end of the pile
   # draw new card
   deck += [deck.pop(0)]
@@ -47,7 +47,7 @@ def drawcard(current_card, hand, deck):
   # while not a valid card
   while valid(play, current_card) == False:
     time.sleep(1)
-    print(".")
+    print(".", end = "")
     hand.append(play)
     deck.pop(0)
     play = deck[0] # this card is now in hand

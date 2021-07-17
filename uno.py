@@ -1,9 +1,6 @@
 """
 To do:
 - special cards
-- fix drawing cards
-  - while loop
-  - play card
 """
 
 from colorama import Fore
