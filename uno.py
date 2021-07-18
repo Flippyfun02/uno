@@ -1,6 +1,7 @@
 """
 To do:
-- special cards
+- fix errors
+- fix aesthetic mess
 """
 
 from colorama import Fore
@@ -46,11 +47,14 @@ current_card = deck[0]
 time.sleep(1)
 functions.print_card(current_card)
 
+wild = False
+choice = ""
+
 while True:
   current_card = deck[0]
 
   # player's turn
-  current_card, hand, deck = functions.player_turn(current_card, hand, deck)
+  current_card, hand, deck, wild, choice, oppHand = functions.player_turn(current_card, hand, deck, wild, choice, oppHand)
   if functions.win(hand):
     print("You Win!")
     break
@@ -59,7 +63,7 @@ while True:
   functions.print_card(current_card)
 
   #opponent's turn
-  current_card, oppHand, deck = functions.opp_turn(current_card, oppHand, deck)
+  current_card, oppHand, deck, wild, choice, hand = functions.opp_turn(current_card, oppHand, deck, wild, choice, hand)
   if functions.win(hand):
     print("You Lose!")
     break
