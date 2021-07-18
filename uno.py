@@ -10,12 +10,19 @@ import random, functions, time
 
 deck = []
 colors = ["R", "G", "B", "Y"]
+special_cards = ["X", "+2", "RV"] # W, W+4
 
 # creating deck
 for color in colors:
   for x in range(10):
     card = color + str(x)
     deck.append(card)
+  for y in special_cards:
+    card = color + str(y)
+    deck.append(card)
+for i in range(4):
+  deck.append("W+4")
+  deck.append("W")
 
 hand = []
 random.shuffle(deck)
