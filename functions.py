@@ -25,6 +25,8 @@ def print_card(card):
     print(Fore.BLUE + card + Fore.RESET)
   elif card[0] == "Y":
     print(Fore.YELLOW + card + Fore.RESET)
+  else:
+    print(card)
 
 def valid(play, current_card, wild, choice):
   # if there are wild conditions
@@ -34,14 +36,14 @@ def valid(play, current_card, wild, choice):
     else:
       return False
   elif (play[0] in ["R", "G", "B", "Y"]):
-    if (len(play) == 2) and (play[0] == current_card[0] or play[2:] == current_card[2:]):
+    if (len(play) == 2) and (play[0] == current_card[0] or play[1:] == current_card[1:]):
       # if regular card
       if (int(play[1]) < 9 and int(play[1]) > 0):
         return True
       elif play[1] == "X":
         return True
     # if card is +2 or reverse
-    elif len(play) == 3 and (play[2:] in ["+2", "RV"]):
+    elif len(play) == 3 and (play[1:] in ["+2", "RV"]):
       return True
   # if wild card
   elif play == "W" or play == "W+4":
@@ -66,10 +68,11 @@ def drawcard(current_card, hand, deck, wild, choice):
     hand.append(play)
     deck.pop(0)
     play = deck[0] # this card is now in hand
+  wild = False
   print("\nSuccess!")
   time.sleep(1)
   current_card = play
-  return current_card, hand, deck
+  return current_card, hand, deck, wild, choice
 
 def player_turn(current_card, hand, deck, wild, choice, oppHand):
   while True:
@@ -85,6 +88,7 @@ def player_turn(current_card, hand, deck, wild, choice, oppHand):
       while (play not in hand) or (valid(play, current_card, wild, choice) == False):
         print("Please play a valid card in your hand.")
         play = input("\nYour Move: ").upper()
+      wild = False
 
       # play card
       deck += [deck.pop(0)]
@@ -108,6 +112,7 @@ def player_turn(current_card, hand, deck, wild, choice, oppHand):
         while (choice not in ["R", "G", "B", "Y"]) or (len(choice) != 1):
           print("Please select a valid color. Enter only the first letter.")
           choice = input("Choose the color: ").upper()
+        continue
       elif play[2:] == "+2":
         print("Drawing Opponent's Cards...")
         for i in range(2):
@@ -139,6 +144,7 @@ def opp_turn(current_card, oppHand, deck, wild, choice, hand):
       deck += [deck.pop(0)] # current card goes to back of deck
       for i in range(len(oppHand)): # find card
         if valid(oppHand[i], current_card, wild, choice):
+          wild = False
           play = oppHand[i]
           # put at top of deck, then discard from hand
           deck.insert(0, oppHand[i])
@@ -147,7 +153,6 @@ def opp_turn(current_card, oppHand, deck, wild, choice, hand):
           if play == "W":
             wild = True
             print_card(play)
-            print("Wild Card!")
             choice = random.choice(["R", "G", "B", "Y"])
             for i in ["R", "G", "B", "Y"]:
               if any(i in card for card in oppHand): # if RGBY exists in hand, then check if choice makes sense
@@ -158,11 +163,10 @@ def opp_turn(current_card, oppHand, deck, wild, choice, hand):
           elif play == "W+4":
             wild = True
             print_card(play)
-            print("Wild Card!")
             print("Drawing your cards...")
             for i in range(4):
               hand.append(deck[1])
-              hand.pop(1)
+              deck.pop(1)
             choice = random.choice(["R", "G", "B", "Y"])
             for i in ["R", "G", "B", "Y"]:
               if any(i in card for card in oppHand): # if RGBY exists in hand, then check if choice makes sense
@@ -170,6 +174,7 @@ def opp_turn(current_card, oppHand, deck, wild, choice, hand):
                   choice = random.choice(["R", "G", "B", "Y"])
                 print(f"Color: {choice}")
                 break
+            continue
           elif play[2:] == "+2":
             print_card(play)
             print("Drawing your cards...")

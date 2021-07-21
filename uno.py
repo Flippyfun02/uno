@@ -42,8 +42,11 @@ for i in range(7):
 # starting game
 print("\nDrawing Card...")
 
-deckEnd = deck[0]
 current_card = deck[0]
+while current_card in ["W", "W+4",] or current_card[1:] in special_cards:
+  deck += [deck.pop(0)]
+  current_card = deck[0]
+deckEnd = current_card
 time.sleep(1)
 functions.print_card(current_card)
 
